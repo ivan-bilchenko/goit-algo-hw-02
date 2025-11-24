@@ -1,33 +1,27 @@
-from queue import Queue
-import time
-import random
+from collections import deque
 
-# Create request queue
-request_queue = Queue()
+def is_palindrome(input_string):
+    cleaned_string = ''.join(input_string.split()).lower()
+    
+    char_deque = deque(cleaned_string)
+    
+    while len(char_deque) > 1:
+        front_char = char_deque.popleft()
+        back_char = char_deque.pop()
+        if front_char != back_char:
+            return False
+    return True
 
-def generate_request():
-    req_id = random.randint(1000, 9999)
-    print(f"Generated request #{req_id}")
-    request_queue.put(req_id)
+def main():
+    test_strings = [
+        "A man a plan a canal Panama",
+        "Racecar",
+        "Python",
+    ]
 
-def process_request():
-    if not request_queue.empty():
-        req_id = request_queue.get()
-        print(f"Processing request #{req_id}")
-        time.sleep(1)
-    else:
-        print("Queue is empty")
+    for s in test_strings:
+        result = is_palindrome(s)
+        print(f"'{s}' -> {result}")
 
 if __name__ == "__main__":
-    print("System started. Press Ctrl+C to stop.")
-    try:
-        while True:
-            # Simulate random request generation
-            if random.choice([True, False]):
-                generate_request()
-            
-            process_request()
-            time.sleep(1)
-            
-    except KeyboardInterrupt:
-        print("\nProgram stopped.")
+    main()
